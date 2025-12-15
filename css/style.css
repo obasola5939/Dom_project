@@ -1,0 +1,345 @@
+
+
+@font-face{
+    font-family: "Brown";
+    src: url('../assets/fonts/Karla-VariableFont_wght.ttf') format("truetype");  /* it provides hint that allows the browser to quickly decide if it can use the file without needing to download the entire file first, which can speed up the page loading */
+
+    font-weight: 100 900;
+
+    font-style: normal;
+}
+
+@font-face{
+    font-family: "Brown";
+    src: url('../assets/fonts/Karla-Italic-VariableFont_wght.ttf') format("truetype");  /* it provides hint that allows the browser to quickly decide if it can use the file without needing to download the entire file first, which can speed up the page loading */
+
+    font-weight: 100 900;
+
+    font-style: italic;
+}
+
+
+/* ** CSS Variables (custom properties */
+
+:root{
+    /* Background colors */
+    --bg-page: #e0f1e7;
+    --bg-card: #fff;
+    --bg-success: #1b3b34;
+
+    /* Border colors */
+    --border: #cad9cf;
+    --border-strong: #0c7d69;
+    --border-error: #d73c3c;
+
+    /* Text colors */
+    --text-main: #1f3330;
+    --text-muted: #6c7c77;
+    --text-errorbn   : #d73c3c;
+
+    /* Button colors */
+    --btn-bg: #0c7d69;
+    --btn-bg-hover: #063f38;
+    --btn-text: #fff;
+
+    /* Border radius value */
+    --radius-card: 18px;
+    --radius-input: 8px;
+
+    /* shadow effects */
+    --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.25);
+    --shadow-toast: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* ** Global Styles (Applied to entire page) */
+/* Apply border-box sizing to All elements and pseudo-elements, This makes padding and border included in element's total width/height */
+
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+
+/* Reset default margin and padding on html and body elements */
+html,
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "karla",
+    system-ui, -apple-system, BlinkMacSystemFont, 'segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    color: var(--text-main);
+    background-color: var(--bg-page);
+}
+
+/* Ensure body takes at least full viewport height */
+body{
+    min-height: 100vh;
+}
+
+.page-wrapper{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 26px;
+}
+
+.card{
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    background-color: var(--bg-card);
+    border-radius:  var(--radius-card);
+    padding: 32px 32px 36px;
+    box-shadow: var(--shadow-card);
+}
+
+/* Main tittle inside the card */
+.card-title{
+    margin: 0 0 24px;
+    font-size: 1.6rem;
+}
+
+/* Form Elements */
+
+.form-row{
+    display: grid; 
+    /* Two equal colums */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.form-control{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+}
+
+/* Style for labels and legends (fieldset title) */
+
+.form-control label,
+.form-control legend{
+    font-weight: 600;
+}
+
+.form-control legend{
+    margin-bottom: 4px;
+}
+
+.required{
+    color: var(--border-strong);
+}
+
+
+/* Base styles for text inputs, email inputs, and textareas */
+input[type="text"],
+input[type="email"],
+textarea{
+    font:inherit;
+    padding: 10px 12px;
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border);
+    outline: none;
+
+    /* Smooth transitions for border, shadow, and background changes */
+/* transition: border-color 0.2s ease,
+box-shadow 0.2s ease,
+background-color 0.2s ease; */
+} 
+
+/* Make textarea resizeable only vertically (up/down) */
+
+textarea{
+    resize: vertical;
+    min-height: 120px; /* Ensures the textarea's rendered height is never less than 120 pixels, even if the user tries to shrink it */
+}
+
+
+/* When user clicks/tabs into an input field */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus{
+    border-color: var(--border-strong); /* Change border to strong green */
+    box-shadow: 0 0 0 1px  rgba(12, 125, 105, 0.2); /* Green glow effect */
+}
+
+/* ! Error States (Applied via Javascript) */
+
+/* When .error class is added to form-control by Javascript */
+.form-control.error input[type="text"],
+.form-control.error input[type="email"],
+.form-control.error textarea,
+.form-control.error fieldset{
+    border-color: var(--border-error);  /* Red border for errors */
+}
+
+/* Show error message when .eror class is present */
+.form-control.error .error-message{
+    display: block;  /* change from 'none' to 'block' */
+}
+
+/* Error message styling (hidden by default) */
+.error-message{
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-error); /* Red text color */
+    display: none;  /* Hidden by default, shown via JS */
+}
+
+/* Remove default fieldset border and padding */
+fieldset.form-control{
+    border: none;
+    padding: 0;
+}
+
+/* container for the two radio options */
+.query-options{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two equal columns */
+    gap: 12px;  /* 12px gap between options */ 
+}
+
+.query-option{
+    position: relative;
+    cursor: pointer;
+}
+
+.query-option input{
+    position: absolute;  /* Take out of normal document flow */
+    opacity: 0; /* Make invisible (but still clickable) */
+    pointer-events: none;  /* prevent mouse events on the input itself. */
+}
+
+/* * Visual representation of radio (what users see) */
+
+.query-option-inner{
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: var(--radius-input);
+    border: 1px solid var(--border);
+    background-color: #fff;
+}
+
+.custom-radio{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;  /* perfect circle */
+    border: 1px solid var(--border);
+    flex-shrink: 0;  /* Don't shrink when container is small */
+    display: inline-block;  /* Display as block element */
+    background-color: #fff;
+}
+
+/* Hover state for query option */
+.query-option-inner:hover{
+    border-color: var(--border-strong);
+}
+
+/* * Checked state for query options */ 
+.query-option input:checked + .query-option-inner{
+    /* + selector targets the .query-option-inner immidiately after the checked input */
+    border-color: var(--border-strong);  /* Green border */
+    background-color: var(--bg-page);  /* Light green background */
+}
+
+/* Style for the custom radio circle when selected */
+.query-option input:checked + .query-option-inner .custom-radio{
+    border: none;
+    background-image: url("../assets/images/icon-radio-selected.svg"); /* Checkmark icon */
+    background-size: contain; /* scale icon to fit circle */
+    background-repeat: no-repeat;  /* Don't repeat the image */
+    background-position: center;  /* center the icon */              
+}
+
+.form-control--checkbox{
+    margin-top: 4px;
+}
+.checkbox-label{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-label input{
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* visual representation of checkbox */
+.custom-checkbox{
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;  /* perfect circle */
+    border: 1px solid var(--border);
+    flex-shrink: 0;  /* Don't shrink when container is small */
+    display: inline-block;  /* Display as block element */
+    background-color: #fff;
+}
+
+/* Text next to checkbox */
+.checkbox-text{
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+
+/* When user hovers over checkbox label */
+.checkbox-label:hover .custom-checkbox{
+    border-color: var(--border-strong);
+}
+
+/* When checkbox is checked (ticked) */
+.checkbox-label input:checked + .custom-checkbox{
+    border-color: var(--border-strong);
+    /* background-color: var(--border-strong); */
+    background-image: url("../assets/images/icon-checkbox-check.svg"); /* checkmark */
+    background-repeat: no-repeat;
+    background-position: center;  /* NOTE: it is used to control the dimensions of a background image applied to an HTML element */
+    /* First value (12px) sets the width of the background image */
+    /* second value (12px) sets the height of the background image */
+    background-size: 17px 17px;
+}
+
+
+/* Submit Button */
+.btn-submit{
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+}
+
+
+/* Active/click state for button */
+.btn-submit:active{
+    transform: translateY(1px);  /* Slight downward movement when clicked */
+}
+
+/* * Success Toast Notification */
+.success-toast{
+    position: fixed;   /* Fixed to viewport (stays in place when scrolling) */
+    top: 20px;   /* 20px from top of viewport */
+    left: 50%;   /* Center horizontally (start at 50% from left) */
+    transform: translateX(-50%) translateY(-20px);     /* Center Exactly: move left by 50% of element's width and up by 20px */
+
+    /* ! 46px max, or 92% of viewport width (whichever is smaller) */
+    /* Responsive by - shrinks on mobile (92vw) */
+    /* Make sure it never exceeds 460px on desktop */
+    width: min(460px, 92vw);
+    background-color: var(--bg-success);
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow-toast);
+}
