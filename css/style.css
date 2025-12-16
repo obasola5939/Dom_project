@@ -342,4 +342,72 @@ fieldset.form-control{
     color: #fff;
     border-radius: 12px;
     box-shadow: var(--shadow-toast);
+    padding: 14px 18px;
+    opacity: 0;
+    pointer-events: none;
+    /* Animation *** */
+    transition-property: opacity, transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+
+
+
+    z-index: 100;  /* Hihgt z-index to appear above other content */
+}
+
+/* When .show class is added by Javascript */
+.success-toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);  /* Slide to final position */
+    pointer-events: auto;  /* Allow interaction */
+
+}
+
+/* Inner container for toast content */
+.success-inner{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Checkmark icon styling */
+.success-icon img{
+    width: 22px;  /* Fixed width */
+    height: 22px;  /* Fixed height */
+}
+
+/* Toast title */
+.success-title{
+    margin: 0 0 2px;
+    font-weight: 700;
+}
+
+/* Toast message body */
+.success-body{
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+
+/* ----------------------------
+    Responsive design (mobile)
+------------------------------- */
+
+/* Apply these styles when viewport is 640px wide or less */
+@media (max-width:640px){
+    .card{
+        padding: 24px 20px 28px;  /* Less padding on smaller screens */
+        background-color: red;
+    }
+
+    /* Stack form field vertically on mobile */
+
+    .form-row{
+        grid-template-columns: 1fr;  /* Single column instead of two */ 
+    }
+
+    /* Stack radio options vertically on mobile */
+    .query-options{
+        grid-template-columns: 1fr;  /* Single column instead of two */
+    }
 }
