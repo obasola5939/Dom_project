@@ -79,6 +79,126 @@ function validateFirstName(){
     }
 
     // if Valid, clear an existing error
+    clearError("firstName");
+    return true;  // Validation passed
+}
+
+// * Validate the Last name field
+// {boolean} - True if valid, false if invalid
+
+function validatelastName(){
+    const value = lastNameInput.value.trim();
+
+    // Check if the value is empty 
+    if(!value){
+        // If empty, show error message
+        setError("lastName", "This field is required");
+        return false; // validation failed
+    }
+
+    // if Valid, clear an existing error
     clearError("lastName");
     return true;  // Validation passed
+}
+
+
+function validateEmail(){
+    // Get the value from the input and trim whitespace 
+    const value = emailInput.value.trim();
+
+    // * Regular expression to validate email format
+// pattern : non-whitespace characters, then @, then non-whitespace, then ., then non-whitespace
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Check if the value is empty 
+    if(!value){
+        // If empty, show error message
+        setError("email", "This field is required");
+        return false; // validation failed
+    }
+
+    // Check if the email matches the valid format using regex
+    if(!emailRegex.test(value)){
+        setError("email", "Please enter a valid email address");
+    }
+
+    // if Valid, clear an existing error
+    clearError("email");
+    return true;  // Validation passed
+}
+
+// * Validate the query typr radio buttons
+// {boolean} - True if valid, false if invalid
+
+function validateQueryType(){
+    // find which radio button is checked (if any)
+    // querySelector returns the first matching element of null if none found
+    const selected = document.querySelector('input[name="queryType"]:checked');
+
+    // if no radio button is selected
+
+    if(!selected){
+        // if empty, show error message
+        setError("queryType", "please select a query type");
+        return false; // validation failed
+    }
+    // if valid, clear any existing error
+    clearError("queryType");
+    return true;  // Validation passed
+}
+
+
+// validate the message textarea
+function validateMessage(){
+    // Get the value from the input and trim whitespace
+    const value = messageInput.value.trim();
+
+    // Check if the value is empty
+    if(!value){
+        // if empty, show error message
+        setError("message", "This field is required");
+        return false;  // validation failed
+    }
+
+    // if valid, clear any existing error
+    clearError("message");
+    return true;  // validation passsed
+}
+
+// validates the consent checkbox
+function validateConsent(){
+
+    // Check if the value is empty
+    if(!consentInput.checked){
+        // if not checked, shoe error message
+        setError("consent", "To submit this form, please consent to being contacted");
+        return false;  // validation failed
+    }
+
+    // if checked, clear any error
+    clearError("consent");
+    return true;  // validation passed
+}
+
+
+// validates the entire form by checking all fields
+function validateForm(){
+    // call all validation function and store their results
+    const v1 = validateFirstName();
+    const v2 = validateLastName();
+    const v3 = validateEmail();
+    const v4 = validateQueryType();
+    const v5 = validateConsent();
+
+    // * Return true only if ALL validations passed (all are true)
+    // * Using Logical AND: return onlt if all conditions are true
+    return v1 && v2 && v3 && v4 && v5 && v6
+}
+
+// Show a success notification toast and automatically hides it after 3 seconds
+function showSuccessToast(){
+    successToast.classList.add('show');
+    setTimeout(() => {
+        successToast.classList.remove("show");
+    }, 3000)
 }
