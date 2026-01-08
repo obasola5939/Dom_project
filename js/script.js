@@ -86,7 +86,7 @@ function validateFirstName(){
 // * Validate the Last name field
 // {boolean} - True if valid, false if invalid
 
-function validatelastName(){
+function validateLastName(){
     const value = lastNameInput.value.trim();
 
     // Check if the value is empty 
@@ -189,6 +189,7 @@ function validateForm(){
     const v3 = validateEmail();
     const v4 = validateQueryType();
     const v5 = validateConsent();
+    const v6 = validateConsent();
 
     // * Return true only if ALL validations passed (all are true)
     // * Using Logical AND: return onlt if all conditions are true
@@ -202,3 +203,81 @@ function showSuccessToast(){
         successToast.classList.remove("show");
     }, 3000)
 }
+
+// * Resets radio buttons and clears all error messages (for form rest)
+
+
+function restRadioAndErrors(){
+  // Get all radio buttons with name="queryType"
+  const radios = document.querySelectorAll('input[name="queryType"]');
+  // Loop through each radio button and uncheck it.
+  radios.forEach((r) => (r.checked = false));
+
+}
+
+// * EVENT LISTENERS FOR REAL-TIME VALIDATION
+
+// Add blur event listeners to validate fields when user leaves them
+// "blur" event fires when an element loses focus (user clicks/tabs away)
+
+
+
+// When user leaves first name field, validate it
+firstNameInput.addEventListener("blur", validateFirstName);
+
+// When user leave last name field, validate it.
+lastNameInput.addEventListener("blur", validateLastName);
+
+// When user leaves email field, validate it.
+emailInput.addEventListener("blur", validateEmail);
+
+// When user leaves message field, validate it.
+messageInput.addEventListener("blur", validateMessage);
+
+// When consent checkbox changes (checked/unchecked), validate it.
+consentInput.addEventListener("change", validateConsent);
+
+
+// * get all query type radio buttons
+
+const queryRadios = document.querySelectorAll('input[name="queryType"]');
+
+
+// Add changes event listener too each radio button
+// When any radio button selection changes, validate the query type
+
+queryRadios.forEach((radio) => 
+  radio.addEventListener("change", validateQueryType)
+);
+
+// FORM SUBMIT HANDLER
+
+// Add submit event listener to the form
+form.addEventListener("submit", function(e) {
+  // Prevent the default form submission (Which would reload the page)
+  e.preventDefault();
+
+  // Validate the entire form
+
+  const isValid  = validateForm();
+
+  // If form is not valid, stop here (don't submit)
+
+  if(!isValid) return;
+
+  // If form IS valid:
+
+  // 1. Reset the form(clears all input value)
+  form.reset();
+
+
+  // 2. Reset radio buttons and clear any remaining errors
+  restRadioAndErrors();
+
+  // 3. Clear errors for all fields (just to be sure)
+  const fields = ["firstName", "lastName", "email", "queryType", "message", "consent"];
+
+  fields.forEach(clearError);
+  // 4. Show success notification
+  showSuccessToast();
+});
